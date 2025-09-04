@@ -13,6 +13,7 @@
     <div th:each="el : ${posts}" class="alert alert-info mt-2">
         <h3 th:text="${el.title}"/>
         <p th:text="${el.anons}"/>
+        <p th:text="'Количество просмотров этой параши: ' + ${el.views}"/>
         <a th:href="'/blog/' + ${el.id}"> Детальнее </a>
     </div>
 </div>
