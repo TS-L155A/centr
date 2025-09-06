@@ -14,8 +14,12 @@
         <h1 th:text="${el.title}"></h1>
         <p th:text="${el.full_text}"></p>
         <p th:text="'Количество просмотров этой параши: ' + ${el.views}"></p>
-        <a th:href="'/blog/' + ${el.id} + '/edit'" class="btn btn-warning"> Редактировать </a>
-        <a th:href="'/blog/' + ${el.id} + '/remove'" class="btn btn-warning"> Удалить </a>
+        <div class="d-flex gap-2">
+            <a th:href="'/blog/' + ${el.id} + '/edit'" class="btn btn-warning"> Редактировать </a>
+            <form th:action="'/blog/' + ${el.id} + '/remove'" method="post">
+                <button class="btn btn-warning" type="submit"> Удалить </button>
+            </form>
+        </div>
     </div>
 </div>
 

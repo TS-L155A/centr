@@ -14,10 +14,12 @@
         <input type="text" name="title" placeholder="Введите название статьи" class="form-control"><br>
         <input type="text" name="anons" placeholder="Введите анонс" class="form-control"><br>
         <textarea type="text" name="full_text" placeholder="Введите полный текст" class="form-control"></textarea><br>
-        <input type="int" name="views" placeholder="Введите сколько раз посмотрели на это говно" class="form-control"><br>
+        <input type="number" name="views" placeholder="Введите сколько раз посмотрели на это говно" class="form-control" min="0" max="2147483647" step="1" required><br>
         <button type="submit" class="btn btn-success">Отправить в модерацию</button>
     </form>
 </div>
+
+
 
 <footer th:insert="blocks/footer :: footer"></footer>
 </body>

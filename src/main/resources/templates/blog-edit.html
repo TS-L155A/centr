@@ -12,9 +12,10 @@
     <h1>Редакт статьи</h1>
     <div th:each="el : ${posts}">
         <form method="post">
-            <input type="text" th:value="${el.title}" name="title" placeholder="Введите название статьи" class="form-control">
-            <input type="text" th:value="${el.anons}" name="anons" placeholder="Введите анонс" class="form-control">
-            <textarea name="full_text" placeholder="Введите полный текст" class="form-control" th:text="${el.full_text}"></textarea>          <input type="number" th:value="${el.views}" name="views" placeholder="Введите сколько раз посмотрели на это говно" class="form-control"><br>
+            <input type="text" th:value="${el.title}" name="title" placeholder="Введите название статьи" class="form-control"><br>
+            <input type="text" th:value="${el.anons}" name="anons" placeholder="Введите анонс" class="form-control"><br>
+            <textarea name="full_text" placeholder="Введите полный текст" class="form-control" th:text="${el.full_text}"></textarea> <br>
+            <input type="number" th:value="${el.views}" name="views" placeholder="Введите сколько раз посмотрели на это говно" class="form-control" min="0" max="2147483647" step="1" required><br>
             <button type="submit" class="btn btn-success">Абновить</button>
         </form>
     </div>
