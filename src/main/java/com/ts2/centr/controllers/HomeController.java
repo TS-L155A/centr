@@ -14,11 +14,9 @@ public class HomeController {
     private PostRepository postRepository;
 
     @GetMapping("/")
-    public String greeting(Model model) {
+    public String greeting_redirect(Model model) {
         model.addAttribute("title", "Главная еблица");
-        Iterable<Post> posts = postRepository.findAll();
-        model.addAttribute("posts", posts);
-        return "home";
+        return "redirect:/blog";
     }
 
     @GetMapping("/about")
