@@ -13,19 +13,8 @@ public class Havka {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String title, addits, unit;
+    private String title, addits, unit, imagePath;
     private double quantity;
-
-    public Havka(Long id, String title, String addits, String unit, double quantity) {
-        this.id = id;
-        this.title = title;
-        this.addits = addits;
-        this.unit = unit;
-        this.quantity = quantity;
-    }
-
-    public Havka() {
-    }
 
     public Long getId() {
         return id;
@@ -59,11 +48,30 @@ public class Havka {
         this.unit = unit;
     }
 
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
     public double getQuantity() {
         return quantity;
     }
 
     public void setQuantity(double quantity) {
         this.quantity = quantity;
+    }
+
+    public Havka(String title, String addits, String unit, String imagePath, double quantity) {
+        this.title = title;
+        this.addits = addits;
+        this.unit = unit;
+        this.imagePath = imagePath;
+        this.quantity = quantity;
+    }
+
+    public Havka() {
     }
 }

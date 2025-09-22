@@ -1,7 +1,7 @@
 package com.ts2.centr.controllers;
 
-import com.ts2.centr.models.Post;
-import com.ts2.centr.repo.PostRepository;
+import com.ts2.centr.models.Havka;
+import com.ts2.centr.repo.HavkaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,59 +14,61 @@ import java.util.Optional;
 public class BlogController {
 
     @Autowired
-    private PostRepository postRepository;
+    private HavkaRepository havkaRepository;
 
     @GetMapping("/blog")
     public String blogMain(Model model){
-        Iterable<Post> posts = postRepository.findAll();
-        model.addAttribute("posts", posts);
+        Iterable<Havka> havkas = havkaRepository.findAll();
+        model.addAttribute("havkas", havkas);
         return "blog-main";
     }
+
     @GetMapping("/blog/add")
     public String blogAdd(Model model){
         return "blog-add";
     }
 
     @PostMapping("/blog/add")
-    public String blogPostAdd(@RequestParam String title, @RequestParam String anons, @RequestParam String full_text, @RequestParam int views, Model model){
-        Post post = new Post(title, anons, full_text, views);
-        postRepository.save(post);
+    public String blogPostAdd(@RequestParam String title, @RequestParam String addits, @RequestParam String unit, @RequestParam String imagePath, @RequestParam double quantity, Model model){
+        Havka havka = new Havka(title, addits, imagePath, unit, quantity);
+        havkaRepository.save(havka);
         return "redirect:/blog";
     }
 
     @GetMapping("/blog/{id}")
     public String blogDetails(@PathVariable(value = "id") long id, Model model){
-        Optional<Post> post = postRepository.findById(id);
-        ArrayList<Post> res = new ArrayList<>();
-        post.ifPresent(res::add);
+        Optional<Havka> havka = havkaRepository.findById(id);
+        ArrayList<Havka> res = new ArrayList<>();
+        havka.ifPresent(res::add);
 
-        model.addAttribute("posts", res);
+        model.addAttribute("havkas", res);
         return "blog-details";
     }
 
     @GetMapping("/blog/{id}/edit")
     public String blogEdit(@PathVariable(value = "id") long id, Model model){
-        Post post = postRepository.findById(id).orElseThrow();
-        model.addAttribute("posts", post); // 👈 кладём один объект
+        Havka havka = havkaRepository.findById(id).orElseThrow();
+        model.addAttribute("havkas", havka); // 👈 кладём один объект
         return "blog-edit";
     }
 
     @PostMapping("/blog/{id}/edit")
-    public String blogPostUpdate(@PathVariable(value = "id") long id, @RequestParam String title, @RequestParam String anons, @RequestParam String full_text, @RequestParam int views, Model model){
-        Post post = postRepository.findById(id).orElseThrow();
-        post.setTitle(title);
-        post.setAnons(anons);
-        post.setFull_text(full_text);
-        post.setViews(views);
-        postRepository.save(post);
+    public String blogPostUpdate(@PathVariable(value = "id") long id, @RequestParam String title, @RequestParam String addits, @RequestParam String unit, @RequestParam String imagePath, @RequestParam double quantity, Model model){
+        Havka havka = havkaRepository.findById(id).orElseThrow();
+        havka.setTitle(title);
+        havka.setAddits(addits);
+        havka.setUnit(unit);
+        havka.setImagePath(imagePath);
+        havka.setQuantity(quantity);
+        havkaRepository.save(havka);
 
         return "redirect:/blog";
     }
 
     @PostMapping("/blog/{id}/remove")
     public String blogPostDelete(@PathVariable(value = "id") long id, Model model){
-        Post post = postRepository.findById(id).orElseThrow();
-        postRepository.delete(post);
+        Havka havka = havkaRepository.findById(id).orElseThrow();
+        havkaRepository.delete(havka);
 
         return "redirect:/blog";
     }
