@@ -1,7 +1,7 @@
 package com.ts2.centr.controllers;
 
-import com.ts2.centr.models.Post;
-import com.ts2.centr.repo.PostRepository;
+
+import com.ts2.centr.repo.HavkaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
 
     @Autowired
-    private PostRepository postRepository;
+    private HavkaRepository havkaRepository;
 
     @GetMapping("/")
     public String greeting_redirect(Model model) {
