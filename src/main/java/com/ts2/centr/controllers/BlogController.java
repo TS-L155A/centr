@@ -77,7 +77,7 @@ public class BlogController {
         }
 
         // теперь создаём объект и сохраняем в БД
-        Havka havka = new Havka(title, addits, imagePath, unit, quantity);
+        Havka havka = new Havka(title, addits, unit, imagePath, quantity);
         try {
             havkaRepository.save(havka);
         } catch (Exception e) {
