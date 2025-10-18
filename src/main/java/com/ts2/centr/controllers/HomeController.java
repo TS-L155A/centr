@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
 
     // я уже забыл что делать
+    //1810
     @Autowired
     private HavkaRepository havkaRepository;
 
