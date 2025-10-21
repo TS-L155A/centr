@@ -16,7 +16,17 @@
     <form th:action="@{/blog/add}" method="post" enctype="multipart/form-data">
         <input type="text" name="title" class="form-control" placeholder="Название"><br>
         <input type="text" name="addits" class="form-control" placeholder="Короткое описание"><br>
-        <input type="text" name="unit" class="form-control" placeholder="Единица (шт, кг...)"><br>
+        <div class="mb-3">
+            <label class="form-label">Единица измерения</label>
+            <select name="unit" class="form-select">
+                <option value="шт">Штуки (шт)</option>
+                <option value="кг">Килограммы (кг)</option>
+                <option value="г">Граммы (г)</option>
+                <option value="л">Литры (л)</option>
+                <option value="мл">Миллилитры (мл)</option>
+                <option value="упак.">Упаковки (упак.)</option>
+            </select>
+        </div>
         <input type="number" name="quantity" class="form-control" placeholder="Количество" step="0.01"><br>
 
         <div class="mb-3">

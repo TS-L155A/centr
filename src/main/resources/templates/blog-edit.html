@@ -27,8 +27,16 @@
 
         <div class="mb-3">
             <label class="form-label">Единица измерения</label>
-            <input type="text" th:value="${havka.unit}" name="unit" class="form-control">
+            <select name="unit" class="form-select">
+                <option value="шт" th:selected="${havka.unit == 'шт'}">Штуки (шт)</option>
+                <option value="кг" th:selected="${havka.unit == 'кг'}">Килограммы (кг)</option>
+                <option value="г" th:selected="${havka.unit == 'г'}">Граммы (г)</option>
+                <option value="л" th:selected="${havka.unit == 'л'}">Литры (л)</option>
+                <option value="мл" th:selected="${havka.unit == 'мл'}">Миллилитры (мл)</option>
+                <option value="упак." th:selected="${havka.unit == 'упак.'}">Упаковки (упак.)</option>
+            </select>
         </div>
+
 
         <div class="mb-3">
             <label class="form-label">Количество</label>
