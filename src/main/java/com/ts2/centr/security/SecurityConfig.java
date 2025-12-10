@@ -26,8 +26,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())//потом фиксить
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/","/").permitAll()//всем
-                        .requestMatchers().hasRole()
-                                .requestMatchers()
+                        .requestMatchers().hasRole("ADMIN")
+                                .requestMatchers().hasRole("SELLER")
                         )
     }
 
