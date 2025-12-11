@@ -26,9 +26,18 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())//потом фиксить
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/","/").permitAll()//всем
-                        .requestMatchers().hasRole("ADMIN")
-                                .requestMatchers().hasRole("SELLER")
+                        .requestMatchers("").hasRole("ADMIN")
+                        .requestMatchers("").hasRole("SELLER")
+                        .anyRequest().authenticated()
                         )
+                .userDetailsService(customUserDetailsService)
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/", true)
+                        .permitAll()
+                )
+                .logout(logout -> logout.permitAll());
+        return http.build();
     }
 
     @Bean
