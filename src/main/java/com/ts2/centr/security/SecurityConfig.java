@@ -25,9 +25,9 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())//потом фиксить
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/","/").permitAll()//всем
-                        .requestMatchers("").hasRole("ADMIN")
-                        .requestMatchers("").hasRole("SELLER")
+                        .requestMatchers("/","/login","/register").permitAll()//всем
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/seller/**").hasRole("SELLER")
                         .anyRequest().authenticated()
                         )
                 .userDetailsService(customUserDetailsService)
