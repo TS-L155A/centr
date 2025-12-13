@@ -32,11 +32,6 @@ public class BlogController {
         return "blog-main";
     }
 
-    @GetMapping("/login")
-    public String loginPage() {
-        return "login"; // login.html
-    }
-
     // форма добавления
     @GetMapping("/add")
     public String blogAdd() {
