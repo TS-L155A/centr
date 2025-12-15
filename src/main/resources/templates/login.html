@@ -8,14 +8,16 @@
 <body>
 <header th:insert="blocks/header :: header"></header>
 
+<div style="margin-left: 10px">
 <h1>Логин</h1>
 <form method="post" action="/login">
     <input name="username" placeholder="Имя">
     <input name="password" type="password" placeholder="Пароль">
     <button type="submit">Войти</button>
 </form>
+</div>
 
-<div style="margin-top: 10px;">
+<div style="margin-top: 10px; margin-left: 10px;">
     <a href="/register">
         <button type="button">Регистрация</button>
     </a>
