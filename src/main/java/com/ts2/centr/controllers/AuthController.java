@@ -37,8 +37,8 @@ public class AuthController {
         try {
             userService.register(username, password, role);
             return "redirect:/login";
-        } catch (Exception e) {
-            model.addAttribute("error", "Пользователь еблан");
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
             return "register";
         }
     }

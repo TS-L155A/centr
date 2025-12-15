@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
+    private static final String USERNAME_REGEX = "^[a-zA-Z0-9_-]{3,30}$";
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -16,6 +18,15 @@ public class UserService {
     }
 
     public User register(String username, String rawPassword, Role role) {
+
+        if (!username.matches(USERNAME_REGEX)) {
+            throw new IllegalArgumentException("Имя пользователя может содержать только латинские буквы, цифры, _ и -");
+        }
+
+        if (userRepository.findByUsername(username).isPresent()) {
+            throw new IllegalArgumentException("Такой пользователь уже существует");
+        }
+
         User user = new User();
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(rawPassword));

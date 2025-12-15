@@ -11,30 +11,27 @@
 <div style="margin-left: 10px">
 <h1>Регистрация</h1>
 
-<form method="post" action="/register">
-
-    <div style="margin-top: 10px">
-        <input type="text" name="username" placeholder="Логин" required>
+    <div th:if="${error}" style="color:red; margin-bottom: 10px">
+        <span th:text="${error}"></span>
     </div>
 
-    <div style="margin-top: 10px">
-        <input type="password" name="password" placeholder="Пароль" required>
-    </div>
-
-    <div style="margin-top: 10px">
-        <select name="role" required>
-            <option value="">Выбери роль</option>
-            <option value="BUYER">Покупатель</option>
-            <option value="SELLER">Продавец</option>
-        </select>
-    </div>
-
-    <button type="submit" style="margin-top: 10px">Зарегистрироваться</button>
-
-</form>
+    <form method="post" action="/register">
+        <div style="margin-top: 10px">
+            <input type="text" name="username" placeholder="Логин" required>
+        </div>
+        <div style="margin-top: 10px">
+            <input type="password" name="password" placeholder="Пароль" required>
+        </div>
+        <div style="margin-top: 10px">
+            <select name="role" required>
+                <option value="">Выбери роль</option>
+                <option value="BUYER">Покупатель</option>
+                <option value="SELLER">Продавец</option>
+            </select>
+        </div>
+        <button type="submit" style="margin-top: 10px">Зарегистрироваться</button>
+    </form>
 </div>
-
-<div th:if="${error}" th:text="${error}" style="color:red; margin-left: 10px"></div>
 
 <footer th:insert="blocks/footer :: footer"></footer>
 </body>
