@@ -9,7 +9,7 @@
           crossorigin="anonymous">
 </head>
 <body>
-<header th:insert="blocks/header :: header"></header>
+<header th:insert="~{blocks/header :: header}"></header>
 
 <div class="container mt-5 mb-5">
     <h1>Редактирование продукта</h1>
@@ -55,6 +55,6 @@
     </form>
 </div>
 
-<footer th:insert="blocks/footer :: footer"></footer>
+<footer th:insert="~{blocks/footer :: footer}"></footer>
 </body>
 </html>

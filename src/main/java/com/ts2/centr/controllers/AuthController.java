@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class AuthController {
 
+    private static final String PASSWORD_REGEX = "^(?=.*[A-Z])(?=.*\\d).{5,}$";
+
     private final UserService userService;
 
     public AuthController(UserService userService) {
@@ -34,6 +36,12 @@ public class AuthController {
             @RequestParam Role role,
             Model model
             ) {
+
+        if (!password.matches(PASSWORD_REGEX)) {
+            model.addAttribute("error", "Пароль должен быть от 5 символов, с 1 заглавной буквой и 1 цифрой");
+            return "register";
+        }
+
         try {
             userService.register(username, password, role);
             return "redirect:/login";
