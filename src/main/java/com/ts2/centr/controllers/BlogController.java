@@ -44,7 +44,7 @@ public class BlogController {
             @RequestParam String title,
             @RequestParam String addits,
             @RequestParam String unit,
-            @RequestParam double quantity,
+            @RequestParam int quantity,
             @RequestParam(value = "file", required = false) MultipartFile file
     ) throws IOException {
 
@@ -121,7 +121,7 @@ public class BlogController {
             @RequestParam String title,
             @RequestParam String addits,
             @RequestParam String unit,
-            @RequestParam double quantity,
+            @RequestParam int quantity,
             @RequestParam(value = "file", required = false) MultipartFile file
     ) throws IOException {
         Havka havka = havkaRepository.findById(id).orElseThrow();

@@ -1,11 +1,9 @@
 package com.ts2.centr.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.Random;
 
 @Entity
 public class Havka {
@@ -13,8 +11,15 @@ public class Havka {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title, addits, unit, imagePath;
-    private double quantity;
+    private String title, addits;
+    private String unit;
+    private String imagePath;
+    private int quantity;
+
+    private BigDecimal price;
+
+    @Enumerated(EnumType.STRING)
+    private Quality quality;
 
     public Long getId() {
         return id;
@@ -56,15 +61,31 @@ public class Havka {
         this.imagePath = imagePath;
     }
 
-    public double getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(double quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
-    public Havka(String title, String addits, String unit, String imagePath, double quantity) {
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public Quality getQuality() {
+        return quality;
+    }
+
+    public void setQuality(Quality quality) {
+        this.quality = quality;
+    }
+
+    public Havka(String title, String addits, String unit, String imagePath, int quantity) {
         this.title = title;
         this.addits = addits;
         this.unit = unit;
@@ -72,6 +93,27 @@ public class Havka {
         this.quantity = quantity;
     }
 
+    public Havka(String title, String addits, String unit, String imagePath, int quantity, BigDecimal price) {
+        this.title = title;
+        this.addits = addits;
+        this.unit = unit;
+        this.imagePath = imagePath;
+        this.quantity = quantity;
+        this.price = price;
+    }
+
     public Havka() {
+    }
+
+    private Quality randomQuality() {
+        Quality[] values = Quality.values();
+        return values[new Random().nextInt(values.length)];
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (quality == null) {
+            this.quality = randomQuality();
+        }
     }
 }
