@@ -1,5 +1,6 @@
 package com.ts2.centr.service;
 
+import com.ts2.centr.exceptions.NotFoundException;
 import com.ts2.centr.models.Havka;
 import com.ts2.centr.repo.HavkaRepository;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class HavkaService {
 
     public Havka getById (Long id) {
         return havkaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Товар не найден"));
+                .orElseThrow(() -> new NotFoundException("Товар не найден: " + id));
     }
 
     public void delete(Long id) {

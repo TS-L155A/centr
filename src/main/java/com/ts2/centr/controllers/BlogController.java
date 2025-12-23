@@ -1,8 +1,7 @@
 package com.ts2.centr.controllers;
 
 import com.ts2.centr.models.Havka;
-import com.ts2.centr.repo.HavkaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.ts2.centr.service.HavkaService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -11,15 +10,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Optional;
 import java.util.UUID;
 
 @Controller
 @RequestMapping("/blog")
 public class BlogController {
 
-    @Autowired
-    private HavkaRepository havkaRepository;
+    private final HavkaService havkaService;
+
+    public BlogController(HavkaService havkaService) {
+        this.havkaService = havkaService;
+    }
 
     // общая папка для загрузок рядом с проектом
     private final String UPLOAD_DIR = System.getProperty("user.dir") + File.separator + "uploads";
@@ -27,7 +28,7 @@ public class BlogController {
     // список
     @GetMapping
     public String blogMain(Model model) {
-        Iterable<Havka> havkas = havkaRepository.findAll();
+        Iterable<Havka> havkas = havkaService.getAll();
         model.addAttribute("havkas", havkas);
         return "blog-main";
     }
@@ -79,7 +80,7 @@ public class BlogController {
         // теперь создаём объект и сохраняем в БД
         Havka havka = new Havka(title, addits, unit, imagePath, quantity);
         try {
-            havkaRepository.save(havka);
+            havkaService.save(havka);
         } catch (Exception e) {
             // если DB упала, удалим файл (если он был записан), чтобы не оставлять мусор
             if (imagePath != null) {
@@ -95,22 +96,16 @@ public class BlogController {
     // детали
     @GetMapping("/{id}")
     public String blogDetails(@PathVariable Long id, Model model) {
-        Optional<Havka> havka = havkaRepository.findById(id);
-        if (havka.isEmpty()) {
-            return "error/404";
-        }
-        model.addAttribute("havka", havka.get());
+        Havka havka = havkaService.getById(id);
+        model.addAttribute("havka", havka);
         return "blog-details";
     }
 
     // форма редактирования
     @GetMapping("/{id}/edit")
     public String blogEdit(@PathVariable Long id, Model model) {
-        Optional<Havka> havka = havkaRepository.findById(id);
-        if (havka.isEmpty()) {
-            return "error/404";
-        }
-        model.addAttribute("havka", havka.get());
+        Havka havka = havkaService.getById(id);
+        model.addAttribute("havka", havka);
         return "blog-edit";
     }
 
@@ -124,7 +119,7 @@ public class BlogController {
             @RequestParam int quantity,
             @RequestParam(value = "file", required = false) MultipartFile file
     ) throws IOException {
-        Havka havka = havkaRepository.findById(id).orElseThrow();
+        Havka havka = havkaService.getById(id);
 
         String oldImage = havka.getImagePath();
         String newImagePath = null;
@@ -157,7 +152,7 @@ public class BlogController {
         havka.setQuantity(quantity);
 
         try {
-            havkaRepository.save(havka);
+            havkaService.save(havka);
             // если новая картинка успешно сохранена в DB, удалим старый файл (если он был в uploads)
             if (newImagePath != null && oldImage != null && oldImage.startsWith("/uploads/")) {
                 File oldFile = new File(UPLOAD_DIR, oldImage.substring("/uploads/".length()));
@@ -178,15 +173,20 @@ public class BlogController {
     // удаление
     @PostMapping("/{id}/remove")
     public String blogPostDelete(@PathVariable Long id) {
-        havkaRepository.findById(id).ifPresent(h -> {
-            // удаляем файл с диска, если он лежит в uploads
-            String img = h.getImagePath();
-            if (img != null && img.startsWith("/uploads/")) {
-                File f = new File(UPLOAD_DIR, img.substring("/uploads/".length()));
-                if (f.exists()) f.delete();
-            }
-            havkaRepository.delete(h);
-        });
+
+        Havka havka = havkaService.getById(id);
+
+        String img = havka.getImagePath();
+        if (img != null && img.startsWith("/uploads/")) {
+            File f = new File(UPLOAD_DIR, img.substring("/uploads/".length()));
+            if (f.exists())
+            {
+                f.delete();
+            };
+        }
+
+        havkaService.delete(id);
+
         return "redirect:/blog";
     }
 }
