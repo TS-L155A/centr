@@ -27,7 +27,15 @@
                 <option value="упак.">Упаковки (упак.)</option>
             </select>
         </div>
-        <input type="number" name="quantity" class="form-control" placeholder="Количество" step="0.01"><br>
+        <input type="number"
+               name="quantity"
+               class="form-control"
+               placeholder="Количество"
+               min="0"
+               max="2147483647"
+               step="1"
+               required>
+        <br>
 
         <div class="mb-3">
             <label class="form-label">Фото (опционально)</label>

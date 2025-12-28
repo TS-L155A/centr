@@ -1,5 +1,6 @@
 package com.ts2.centr.service;
 
+import com.ts2.centr.exceptions.HavkaValidationException;
 import com.ts2.centr.exceptions.NotFoundException;
 import com.ts2.centr.models.Havka;
 import com.ts2.centr.repo.HavkaRepository;
@@ -19,6 +20,11 @@ public class HavkaService {
     }
 
     public Havka save(Havka havka) {
+
+        if (havka.getQuantity() < 0 || havka.getQuantity() > Integer.MAX_VALUE) {
+            throw new HavkaValidationException("Количество должно быть целым числом от 0 до " + Integer.MAX_VALUE);
+        }
+
         return havkaRepository.save(havka);
     }
 
