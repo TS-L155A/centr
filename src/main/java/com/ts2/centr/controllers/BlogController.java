@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Controller
@@ -46,6 +47,7 @@ public class BlogController {
             @RequestParam String addits,
             @RequestParam String unit,
             @RequestParam int quantity,
+            @RequestParam BigDecimal price,
             @RequestParam(value = "file", required = false) MultipartFile file
     ) throws IOException {
 
@@ -78,7 +80,7 @@ public class BlogController {
         }
 
         // теперь создаём объект и сохраняем в БД
-        Havka havka = new Havka(title, addits, unit, imagePath, quantity);
+        Havka havka = new Havka(title, addits, unit, imagePath, quantity, price);
         try {
             havkaService.save(havka);
         } catch (Exception e) {
@@ -117,6 +119,7 @@ public class BlogController {
             @RequestParam String addits,
             @RequestParam String unit,
             @RequestParam int quantity,
+            @RequestParam BigDecimal price,
             @RequestParam(value = "file", required = false) MultipartFile file
     ) throws IOException {
         Havka havka = havkaService.getById(id);
@@ -150,6 +153,7 @@ public class BlogController {
         havka.setAddits(addits);
         havka.setUnit(unit);
         havka.setQuantity(quantity);
+        havka.setPrice(price);
 
         try {
             havkaService.save(havka);

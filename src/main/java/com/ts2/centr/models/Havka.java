@@ -85,14 +85,6 @@ public class Havka {
         this.quality = quality;
     }
 
-    public Havka(String title, String addits, String unit, String imagePath, int quantity) {
-        this.title = title;
-        this.addits = addits;
-        this.unit = unit;
-        this.imagePath = imagePath;
-        this.quantity = quantity;
-    }
-
     public Havka(String title, String addits, String unit, String imagePath, int quantity, BigDecimal price) {
         this.title = title;
         this.addits = addits;
