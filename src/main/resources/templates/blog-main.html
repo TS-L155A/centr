@@ -32,12 +32,19 @@
                 <div class="card-body">
                     <h5 class="card-title" th:text="${el.title}">Название</h5>
                     <p class="card-text text-muted mb-2" th:text="${el.addits}">Описание</p>
+                    <p class="card-text mb-2"
+                       th:text="${el.price > 1000000
+                       ? 'Бесценно'
+                       : #numbers.formatInteger(el.price, 0)} + ' ₸'">
                 </div>
 
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
                         Остаток: <strong th:text="${el.quantity}">0</strong>
                         <span th:text="${el.unit}">шт</span>
+                    </li>
+                    <li class="list-group-item">
+                        КАЧЕСТВО: <strong th:text="${el.quality}">0</strong>
                     </li>
                 </ul>
 
