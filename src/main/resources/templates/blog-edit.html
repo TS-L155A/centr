@@ -37,10 +37,14 @@
             </select>
         </div>
 
+        <div class="mb-3">
+            <label class="form-label">Цена</label>
+            <input type="number" th:value="${havka.price}" name="price" class="form-control" min="0" step="1">
+        </div>
 
         <div class="mb-3">
             <label class="form-label">Количество</label>
-            <input type="number" th:value="${havka.quantity}" name="quantity" class="form-control" min="0" step="0.01">
+            <input type="number" th:value="${havka.quantity}" name="quantity" class="form-control" min="0" step="1">
         </div>
 
         <div class="mb-3">
