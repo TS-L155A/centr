@@ -35,7 +35,7 @@
                     <p class="card-text mb-2"
                        th:text="${el.price > 1000000
                        ? 'Бесценно'
-                       : #numbers.formatInteger(el.price, 0)} + ' ₸'">
+                       : (#numbers.formatInteger(el.price, 0) + ' ₸')}">
                 </div>
 
                 <ul class="list-group list-group-flush">
