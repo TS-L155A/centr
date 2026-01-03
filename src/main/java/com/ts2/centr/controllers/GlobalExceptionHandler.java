@@ -4,9 +4,11 @@ package com.ts2.centr.controllers;
 import com.ts2.centr.exceptions.HavkaValidationException;
 import com.ts2.centr.exceptions.NotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -22,4 +24,5 @@ public class GlobalExceptionHandler {
         model.addAttribute("message", e.getMessage());
         return "error/500";
     }
+
 }
