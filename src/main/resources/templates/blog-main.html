@@ -33,9 +33,11 @@
                     <h5 class="card-title" th:text="${el.title}">Название</h5>
                     <p class="card-text text-muted mb-2" th:text="${el.addits}">Описание</p>
                     <p class="card-text mb-2"
-                       th:text="${el.price > 1000000
+                       th:text="${el.price == null or el.price == 0
+                       ? 'Бесплатно'
+                       : (el.price > 1000000
                        ? 'Бесценно'
-                       : (#numbers.formatInteger(el.price, 0) + ' ₸')}">
+                       : (#numbers.formatInteger(el.price, 0) + ' ₸'))}">
                 </div>
 
                 <ul class="list-group list-group-flush">
