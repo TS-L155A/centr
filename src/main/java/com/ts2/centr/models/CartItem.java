@@ -22,6 +22,9 @@ public class CartItem {
     @Column(nullable = false)
     private BigDecimal priceAtAdd;
 
+    @Column(nullable = false)
+    private BigDecimal priceCurrent;
+
     @PrePersist
     public void prePersist() {
         if (quantity == null || quantity < 1){
@@ -59,5 +62,13 @@ public class CartItem {
 
     public void setPriceAtAdd(BigDecimal priceAtAdd) {
         this.priceAtAdd = priceAtAdd;
+    }
+
+    public BigDecimal getPriceCurrent() {
+        return priceCurrent;
+    }
+
+    public void setPriceCurrent(BigDecimal priceCurrent) {
+        this.priceCurrent = priceCurrent;
     }
 }
