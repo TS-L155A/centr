@@ -24,7 +24,6 @@ public class CartController {
         this.userRepository = userRepository;
     }
 
-    // ———————————— ОТОБРАЖЕНИЕ КОРЗИНЫ ————————————
     @GetMapping("/cart")
     public String cartMain(Model model, Authentication authentication) {
 
@@ -44,7 +43,6 @@ public class CartController {
         return "cart/main";
     }
 
-    // ———————————— ДОБАВЛЕНИЕ В КОРЗИНУ ————————————
     @PostMapping("/cart/add/{havkaId}")
     public String addToCart(@PathVariable Long havkaId, Authentication authentication) {
 
@@ -62,4 +60,45 @@ public class CartController {
     }
 
     // В будущем можно добавить POST /cart/increase/{id}, /cart/decrease/{id}, /cart/remove/{id}
+    @PostMapping("/cart/increase/{itemId}")
+    public String increaseItemCart(@PathVariable Long itemId, Authentication authentication){
+        if (authentication == null) {
+            throw new IllegalStateException("Не авторизован");
+        }
+
+        String username = authentication.getName();
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new IllegalStateException("ТАКОГО НЕ ЗнАЕМ"));
+
+        cartService.increaseItem(itemId, user);
+
+        return "redirect:/blog/cart";
+    }
+
+    @PostMapping("/cart/decrease/{itemId}")
+    public String decreaseItemCart(@PathVariable Long itemId, Authentication authentication){
+        if (authentication == null) {
+            throw new IllegalStateException("Не авторизован");
+        }
+
+        String username = authentication.getName();
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new IllegalStateException("ТАКОГО НЕ ЗнАЕМ"));
+
+        cartService.decreaseItem(itemId, user);
+
+        return "redirect:/blog/cart";
+    }
+
+    @PostMapping("/cart/remove/{itemId}")
+    public String deleteItemCart(@PathVariable Long itemId, Authentication authentication){
+        if (authentication == null) {
+            throw new IllegalStateException("Не авторизован");
+        }
+
+        String username = authentication.getName();
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new IllegalStateException("ТАКОГО НЕ ЗнАЕМ"));
+
+        cartService.deleteItem(itemId, user);
+
+        return "redirect:/blog/cart";
+    }
 }

@@ -37,14 +37,14 @@
             <td th:text="${item.priceAtAdd} + ' ₸'">0 ₸</td>
 
             <td>
-                <form th:action="@{/cart/increase/{id}(id=${item.id})}" method="post" style="display:inline">
+                <form th:action="@{/blog/cart/increase/{id}(id=${item.id})}" method="post" style="display:inline">
                     <button class="btn btn-sm btn-success">+</button>
                 </form>
-                <form th:action="@{/cart/decrease/{id}(id=${item.id})}" method="post" style="display:inline">
+                <form th:action="@{/blog/cart/decrease/{id}(id=${item.id})}" method="post" style="display:inline">
                     <button class="btn btn-sm btn-warning">-</button>
                 </form>
-                <form th:action="@{/cart/remove/{id}(id=${item.id})}" method="post" style="display:inline">
-                    <button class="btn btn-sm btn-danger">x</button>
+                <form th:action="@{/blog/cart/remove/{id}(id=${item.id})}" method="post" style="display:inline">
+                    <button class="btn btn-sm btn-danger">Х</button>
                 </form>
             </td>
         </tr>

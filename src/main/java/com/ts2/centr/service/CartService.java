@@ -59,16 +59,11 @@ public class CartService {
 
         Cart cart = getOrCreateActiveCart(user);
 
-//        if (cart.getId() == null) {
-//            cart = cartRepository.save(cart); // Cart точно с ID
-//        }
-
         CartItem cartItem = cartItemRepository.findByCartAndHavka(cart, havka)
                 .orElse(null);
 
         if (cartItem != null){
             cartItem.setQuantity(cartItem.getQuantity() + 1);
-//            cartItemRepository.save(cartItem);
             return;
         }
 
@@ -86,14 +81,62 @@ public class CartService {
         newCartItem.setPriceCurrent(price);
         CartItem saved = cartItemRepository.save(newCartItem);
 
-        // 🔥 ВОТ ЭТО БЫЛО ПРОПУЩЕНО
         cart.getItems().add(newCartItem);
 
         cart.getItems().add(saved); // теперь cart.getItems() вернёт новый элемент
+    }
 
-        System.out.println("Cart ID: " + cart.getId());
-        System.out.println("Cart items count: " + cart.getItems().size());
-        System.out.println("Saved CartItem ID: " + saved.getId());
+    public void increaseItem(Long cartItemId, User user) {
+
+        Cart cart = getOrCreateActiveCart(user);
+
+        CartItem item = cartItemRepository.findById(cartItemId)
+                .orElseThrow(() -> new NotFoundException("CartItem not found"));
+
+        // 🔐 защита — товар должен принадлежать корзине юзера
+        if (!item.getCart().getId().equals(cart.getId())) {
+            throw new IllegalStateException("Чужая корзина");
+        }
+
+        item.setQuantity(item.getQuantity() + 1);
+    }
+
+    public void decreaseItem(Long cartItemId, User user) {
+
+        Cart cart = getOrCreateActiveCart(user);
+
+        CartItem item = cartItemRepository.findById(cartItemId)
+                .orElseThrow(() -> new NotFoundException("CartItem not found"));
+
+        // 🔐 защита — товар должен принадлежать корзине юзера
+        if (!item.getCart().getId().equals(cart.getId())) {
+            throw new IllegalStateException("Чужая корзина");
+        }
+
+        if (item.getQuantity() > 1) {
+            item.setQuantity(item.getQuantity() - 1);
+            return;
+        }
+
+        // quantity == 1 → удаляем позицию
+        cart.getItems().remove(item);     // важно для отображения
+        cartItemRepository.delete(item);  // удаляем из БД
+    }
+
+    public void deleteItem(Long cartItemId, User user) {
+
+        Cart cart = getOrCreateActiveCart(user);
+
+        CartItem item = cartItemRepository.findById(cartItemId)
+                .orElseThrow(() -> new NotFoundException("CartItem not found"));
+
+        // 🔐 защита — товар должен принадлежать корзине юзера
+        if (!item.getCart().getId().equals(cart.getId())) {
+            throw new IllegalStateException("Чужая корзина");
+        }
+
+        cart.getItems().remove(item);     // важно для отображения
+        cartItemRepository.delete(item);  // удаляем из БД
     }
 
 
