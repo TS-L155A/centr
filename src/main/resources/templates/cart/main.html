@@ -33,8 +33,9 @@
         <tr th:each="item : ${cart.items}">
             <td th:text="${item.havka.title}">Название</td>
             <td th:text="${item.quantity}">1</td>
-            <td th:text="${#numbers.formatDecimal(item.priceAtAdd, 0, 'POINT')} + ' ₸'">0 ₸</td>
-            <td th:text="${#numbers.formatDecimal(item.priceCurrent != null ? item.priceCurrent : item.priceAtAdd, 0, 'POINT')} + ' ₸'">0 ₸</td>
+            <td th:text="${item.priceAtAdd} + ' ₸'">0 ₸</td>
+            <td th:text="${item.priceAtAdd} + ' ₸'">0 ₸</td>
+
             <td>
                 <form th:action="@{/cart/increase/{id}(id=${item.id})}" method="post" style="display:inline">
                     <button class="btn btn-sm btn-success">+</button>

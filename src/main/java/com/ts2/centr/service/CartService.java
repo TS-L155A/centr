@@ -12,6 +12,8 @@ import com.ts2.centr.security.User;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Service
 @Transactional
 public class CartService {
@@ -30,34 +32,43 @@ public class CartService {
     }
 
     public Cart getOrCreateActiveCart (User user) {
-        //user
-        if (user!=null){
-            return cartRepository
-                    .findByUserAndStatus(user, CartStatus.ACTIVE)
-                    .orElseGet(() -> {
-                       Cart cart = new Cart();
-                       cart.setUser(user);
-                       return cartRepository.save(cart);
-                    });
+        //гость
+        if (user == null) {
+            throw new IllegalStateException("Гостевая корзина пока не реализована");
         }
 
-        //guest
-        Cart cart = new Cart();
-        return cartRepository.save(cart);
+        //юз
+        return cartRepository
+                .findByUserAndStatus(user, CartStatus.ACTIVE)
+                .orElseGet(() -> {
+                    Cart cart = new Cart();
+                    cart.setUser(user);
+                    cart.setStatus(CartStatus.ACTIVE);
+                    return cartRepository.save(cart);
+                });
     }
 
     public void addItem(Long havkaId, User user) {
+
+        if (user == null) {
+            throw new IllegalStateException("Добавление в корзину только для авторизованных");
+        }
+
         Havka havka = havkaRepository.findById(havkaId)
                 .orElseThrow(() -> new NotFoundException("ЧЕ ЗА ХУЕТА В КОРЗИНЕ"));
 
         Cart cart = getOrCreateActiveCart(user);
+
+//        if (cart.getId() == null) {
+//            cart = cartRepository.save(cart); // Cart точно с ID
+//        }
 
         CartItem cartItem = cartItemRepository.findByCartAndHavka(cart, havka)
                 .orElse(null);
 
         if (cartItem != null){
             cartItem.setQuantity(cartItem.getQuantity() + 1);
-            cartItemRepository.save(cartItem);
+//            cartItemRepository.save(cartItem);
             return;
         }
 
@@ -65,9 +76,26 @@ public class CartService {
         newCartItem.setCart(cart);
         newCartItem.setHavka(havka);
         newCartItem.setQuantity(1);
-        newCartItem.setPriceAtAdd(havka.getPrice());
 
-        cartItemRepository.save(newCartItem);
+        //обьясняем что бесценно и бесплатно это норм
+        BigDecimal price = havka.getPrice();
+        if (price == null){
+            price = BigDecimal.ZERO;
+        }
+        newCartItem.setPriceAtAdd(price);
+        newCartItem.setPriceCurrent(price);
+        CartItem saved = cartItemRepository.save(newCartItem);
+
+        // 🔥 ВОТ ЭТО БЫЛО ПРОПУЩЕНО
+        cart.getItems().add(newCartItem);
+
+        cart.getItems().add(saved); // теперь cart.getItems() вернёт новый элемент
+
+        System.out.println("Cart ID: " + cart.getId());
+        System.out.println("Cart items count: " + cart.getItems().size());
+        System.out.println("Saved CartItem ID: " + saved.getId());
     }
+
+
 
 }

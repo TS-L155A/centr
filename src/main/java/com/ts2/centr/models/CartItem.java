@@ -71,4 +71,8 @@ public class CartItem {
     public void setPriceCurrent(BigDecimal priceCurrent) {
         this.priceCurrent = priceCurrent;
     }
+
+    public Long getId() {
+        return id;
+    }
 }
