@@ -51,6 +51,8 @@
         </tbody>
     </table>
 
+    <span th:text="${cart.total}"></span>
+
     <!-- Кнопка оформления заказа -->
     <div th:if="${!#lists.isEmpty(cart.items)}" class="text-end mt-3">
         <a href="/order/checkout" class="btn btn-primary">Оформить заказ</a>

@@ -9,6 +9,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.math.BigDecimal;
+
+
 @Entity
 public class Cart {
     @Id
@@ -32,6 +35,22 @@ public class Cart {
         if (status == null) {
             status = CartStatus.ACTIVE;
         }
+    }
+
+    public BigDecimal getTotal() {
+        if (items == null || items.isEmpty()) {
+            return BigDecimal.ZERO;
+        }
+
+        return items.stream()
+                .map(item -> {
+                    BigDecimal price = item.getPriceCurrent() != null
+                            ? item.getPriceCurrent()
+                            : item.getPriceAtAdd();
+
+                    return price.multiply(BigDecimal.valueOf(item.getQuantity()));
+                })
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public Long getId() {
